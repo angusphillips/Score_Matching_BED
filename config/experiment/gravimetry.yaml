@@ -1,0 +1,71 @@
+# @package _global_
+# Microgravity point-source detection with policy network
+
+experiment_name: gravimetry
+
+defaults:
+  - /hydra: default
+  - /bed_model: gravimetry
+  - /policy_network: attention
+  - /policy: attention
+  - /score: warmup_cosine_decay
+  - /score_network: conservative_transformer
+  - /mc_posterior: smc
+  - /wandb: default
+  - _self_
+
+# Global settings
+seed: 0
+score_reload_path: null
+score_reload_step: null
+
+wandb:
+  tags: ["test_gravimetry"]
+
+# Switch the search-space dimensionality, delta_rho and the kappa prior here.
+bed_model:
+  search_dim: 1
+  delta_rho: -2200.0
+  kappa_prior: generative
+
+n_restarts: 5
+
+# MC posterior oracle: shared sampler config (config/mc_posterior) + per-use-case
+# sample counts (train = cheap per-step backend; eval = accurate one-off ground truth).
+train_n_post_samples: 1024
+eval_n_post_samples: 5000
+
+# In the search_dim=1 case d_y + d_x = 2, so the conservative-potential LayerNorm
+# is degenerate without an up-projection. Harmless (extra capacity) for
+# search_dim=2, so set it unconditionally.
+score_network:
+  potential_hidden_dim: 128
+
+# The model maps O(1) network designs -> metres via its design_bijector, so the
+# policy recurrence stays O(1) (no scale compounding). A zero-init final layer
+# would still emit ~0 -> all designs at 0, a reflection/permutation-symmetric
+# stationary point of the EIG (gradient ~ 0, designs never spread). Use a non-zero
+# init so the policy starts spread and off that saddle.
+policy_network:
+  zero_init_final_layer: false
+
+policy:
+  grad_est_type: score
+  num_iters: 10000
+  checkpoint_freq: 10000
+  optim_log_freq: 100
+  eig_bounds:
+    freq: 500
+    eval_at: null
+
+score:
+  num_iters: 50000
+  checkpoint_freq: null
+  eval_iters: [10000, 20000, 50000]
+  y_score_loss_weight: 10000
+  clip_grad_norm: 5000
+  design_sampler_type: random_sampler
+  design_sampler_kwargs:
+    sampler_weights_by_type:
+      isotropic_gaussian: 1.0
+      random_scale_gaussian: 1.0

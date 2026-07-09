@@ -1,0 +1,12 @@
+# Location Finding model
+_target_: policy_learning.bed_models.LocationFinding
+T: 30
+d: 2
+k: 2
+init_seed: 0
+d_y: 1
+sigma: 0.5
+design_sigma: 1.0
+alpha: 1.0
+max_signal: 1e-4
+base_intensity: 1e-1

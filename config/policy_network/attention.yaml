@@ -1,0 +1,10 @@
+# Deterministic policy network (TNP-like attention-based)
+_target_: policy_learning.policies.AttentionDesignNet
+encoder_shapes: [64]
+encoding_dim: 32
+num_heads: 4
+enc_act: gelu
+emit_act: gelu
+emitter_shapes: [64]
+n_transformer_layers: 1
+transformer_ff_dim: 64

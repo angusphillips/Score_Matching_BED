@@ -1,0 +1,49 @@
+# @package _global_
+# Cart-pole with policy network
+
+experiment_name: cart_pole
+
+defaults:
+  - /hydra: default
+  - /bed_model: cart_pole
+  - /policy_network: iqbal_lstm
+  - /policy: iqbal_lstm
+  - /score: warmup_cosine_decay
+  - /score_network: conservative_transformer_positional
+  - /mc_posterior: laplace_mixture
+  - /wandb: default
+  - _self_
+
+# Global settings
+seed: 0
+score_reload_path: null
+score_reload_step: null  # Optional: specify checkpoint step to load (null = latest)
+
+# Override wandb settings for this experiment
+wandb:
+  tags: ["cart_pole_tuning"]
+
+n_restarts: 6
+
+policy:
+  grad_est_type: score
+  num_iters: 500
+  checkpoint_freq: 500
+  optim_log_freq: null
+  eig_bounds:
+    freq: 100
+
+# Laplace posterior sampler with a task-specific small MALA step. CartPole runs
+# identical train/eval sample counts.
+mc_posterior:
+  mala_steps: 0
+train_n_post_samples: 5000
+eval_n_post_samples: 5000
+
+score:
+  num_iters: 50000
+  checkpoint_freq: null
+  eval_iters: [10000, 20000, 50000]
+  y_score_loss_weight: 0.004
+  clip_grad_norm: 600
+  design_sampler_type: random_sampler

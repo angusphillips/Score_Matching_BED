@@ -1,0 +1,3 @@
+# Double Pendulum model
+_target_: policy_learning.bed_models.DoublePendulum
+diffusion_mat: [0.1,0.1,0.1,0.1]

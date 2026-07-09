@@ -1,0 +1,49 @@
+[tool.ruff]
+# General formatting and linting settings
+line-length = 88
+target-version = "py311"
+
+# Enable common rule sets
+lint.select = [
+  "E",   # pycodestyle errors
+  "F",   # pyflakes
+  "I",   # import sorting
+  "B",   # bugbear
+  "UP",  # pyupgrade
+  "C4",  # comprehensions
+]
+
+# Ignore specific rules (optional)
+lint.ignore = [
+  "E501",  # line length (since the formatter handles this)
+  "E741", # ambiguous variable names
+]
+
+exclude = [
+  "policy_learning/utils/loggers_pl",
+  "notebooks",
+  "run_scripts_archive"
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["policy_learning", "experiments"]
+
+# Ruff formatter settings
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+
+[tool.mypy]
+python_version = "3.13"
+disallow_untyped_defs = false
+warn_unused_ignores = false
+warn_return_any = false
+ignore_missing_imports = true
+exclude = "^policy_learning/utils/loggers_pl/.*|^run_scripts_archive/.*"
+
+[[tool.mypy.overrides]]
+module = ["wandb", "wandb.*"]
+ignore_errors = true

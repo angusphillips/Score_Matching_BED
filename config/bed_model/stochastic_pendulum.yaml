@@ -1,0 +1,2 @@
+_target_: policy_learning.bed_models.StochasticPendulum
+diffusion_mat: [0.1, 0.1]

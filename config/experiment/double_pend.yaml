@@ -1,0 +1,49 @@
+# @package _global_
+# Location finding with policy network
+
+experiment_name: double_pend
+
+defaults:
+  - /hydra: default
+  - /bed_model: double_pendulum
+  - /policy_network: iqbal_lstm
+  - /policy: iqbal_lstm
+  - /score: warmup_cosine_decay
+  - /score_network: conservative_transformer_positional
+  - /mc_posterior: laplace
+  - /wandb: default
+  - _self_
+
+# Global settings
+seed: 0
+score_reload_path: null
+score_reload_step: null  # Optional: specify checkpoint step to load (null = latest)
+
+# Override wandb settings for this experiment
+wandb:
+  tags: ["results_check_02_06"]
+
+n_restarts: 10
+
+policy:
+  grad_est_type: score_chunked
+  num_iters: 500
+  checkpoint_freq: 100
+  optim_log_freq: null
+  eig_bounds:
+    freq: 50
+
+# Laplace posterior sampler with a task-specific small MALA step. Identical
+# train/eval sample counts.
+mc_posterior:
+  mala_step_size: 0.0005
+train_n_post_samples: 5000
+eval_n_post_samples: 5000
+
+score:
+  num_iters: 50000
+  checkpoint_freq: null
+  eval_iters: [10000, 20000, 50000] #[10000, 20000, 50000, 100000, 200000]
+  y_score_loss_weight: 0.02
+  clip_grad_norm: 10000
+  design_sampler_type: random_sampler

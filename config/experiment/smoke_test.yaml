@@ -1,0 +1,49 @@
+# @package _global_
+# Fast end-to-end smoke test (NOT a paper setting): tiny score + policy training
+# on location finding, to verify the full pipeline runs on GPU in ~a couple of
+# minutes. Run with:
+#   pixi run -e cuda python run_scripts/run_random_restarts.py experiment=smoke_test
+
+experiment_name: smoke_test
+
+defaults:
+  - /hydra: default
+  - /bed_model: location_finding
+  - /policy_network: dad
+  - /policy: dad
+  - /score: warmup_cosine_decay
+  - /score_network: conservative_transformer
+  - /mc_posterior: smc
+  - /wandb: default
+  - _self_
+
+seed: 0
+score_reload_path: null
+score_reload_step: null
+
+wandb:
+  tags: ["smoke_test"]
+
+n_restarts: 1
+
+policy:
+  grad_est_type: score
+  num_iters: 100
+  checkpoint_freq: 100
+  optim_log_freq: 50
+  eig_bounds:
+    freq: 50
+    eval_at: null
+  # Small eval budget so bound evaluation is fast.
+  eval_inner_samples: 1e4
+  eval_outer_samples: 256
+  eval_outer_batch_size: 64
+
+score:
+  num_iters: 200
+  checkpoint_freq: 200
+  batch_size: 256
+  log_freq: 50
+  y_score_loss_weight: 30
+  clip_grad_norm: 600
+  design_sampler_type: random_sampler

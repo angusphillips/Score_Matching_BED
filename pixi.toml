@@ -1,0 +1,58 @@
+[workspace]
+authors = ["angusphillips <angusphillips21@gmail.com>"]
+channels = ["conda-forge"]
+name = "policy_learning"
+platforms = ["osx-arm64", "linux-64"]
+version = "0.1.0"
+
+[feature.cuda.system-requirements]
+cuda = "12"
+
+[tasks]
+# Run Ruff linting
+lint = "ruff check ."
+
+# Run Ruff auto-fix and format
+lint-fix = "ruff check . --fix && ruff format ."
+
+# Run Mypy type checking
+typecheck = "mypy ."
+
+# Run pre-commit hooks on all files
+pre-commit-all = "pre-commit run --all-files" 
+
+postinstall = "python -m pip install -e ."
+
+[dependencies]
+python = "3.13.*"
+jax = ">=0.7.2,<0.8"
+optax = ">=0.2.6,<0.3"
+jaxtyping = ">=0.3.2,<0.4"
+hydra-core = ">=1.3.2,<2"
+einops = ">=0.8.1,<0.9"
+matplotlib = ">=3.10.7,<4"
+tqdm = ">=4.67.1,<5"
+wandb = ">=0.22.3,<0.23"
+numpy = ">=2.3.4,<3"
+scipy = ">=1.16.3,<2"
+check_shapes = ">=1.1.1,<2"
+fsspec = ">=2025.10.0,<2026"
+ipykernel = ">=7.1.0,<8"
+gpustat = ">=1.1.1,<2"
+ruff = ">=0.14.4,<0.15"
+mypy = ">=1.18.2,<2"
+pre-commit = ">=4.4.0,<5"
+pip = ">=25.3,<26"
+importlib_resources = "*"
+pytest = ">=9.0.1,<10"
+h5py = ">=3.15.1,<4"
+pandas = ">=3.0.0,<4"
+
+[environments]
+cuda = ["cuda"]
+
+[pypi-dependencies]
+flowjax = ">=17.2.1, <18"
+flax = "==0.10.4"
+orbax-checkpoint = ">=0.11.0,<0.12"
+

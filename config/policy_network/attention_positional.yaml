@@ -1,0 +1,13 @@
+# Deterministic TNP-like attention policy with learned time embeddings over the
+# history buffer. Use for dynamical-systems models (StochasticPendulum,
+# CartPole, DoublePendulum) where the history is a time-ordered trajectory.
+_target_: policy_learning.policies.AttentionDesignNet
+encoder_shapes: [64]
+encoding_dim: 32
+num_heads: 4
+enc_act: gelu
+emit_act: gelu
+emitter_shapes: [64]
+n_transformer_layers: 2
+transformer_ff_dim: 128
+positional: true

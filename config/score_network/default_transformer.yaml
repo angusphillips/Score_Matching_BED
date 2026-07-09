@@ -1,0 +1,13 @@
+_target_: policy_learning.score_nets.Transformer1Branch
+transformer_num_layers: 4
+model_dim: 256
+num_heads: 8
+embed_mlp_dim: 192
+embed_dim: 128
+positional: false
+head_mode: shared_e_t
+noise_condition_mode: y_and_xi_mean
+xi_output_mode: none
+y_output_mode: none
+y_residual_mode: default
+rff_sigma: 10.0

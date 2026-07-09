@@ -1,0 +1,17 @@
+# Microgravity point-source detection model
+_target_: policy_learning.bed_models.Gravimetry
+T: 20
+search_dim: 1            # 1: theta=(x0,z,kappa), xi in R; 2: +y0, xi in R^2
+init_seed: 0
+d_y: 1
+sigma: 1.0               # observation noise std (microGal); up to 5 for low SNR
+delta_rho: -2200.0       # air-filled void; -1500 for water-filled
+kappa_prior: generative  # "generative" (R~U -> kappa) or "direct" (truncated normal)
+tau: 30.0                # horizontal-location prior std (m)
+z_log_std: 0.5
+z_floor: 3.0
+R_min: 1.5
+R_max: 4.0
+kappa_mean: -1200.0      # used only when kappa_prior=direct
+kappa_std: 800.0
+design_sigma: 40.0       # design-prior / sampler spatial scale (m)

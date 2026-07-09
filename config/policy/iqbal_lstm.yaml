@@ -1,0 +1,21 @@
+# Default policy training settings (dynamical systems: constant LR, per paper)
+lr_schedule:
+  _target_: optax.constant_schedule
+  value: 1e-4
+num_iters: 5000
+b1: 0.9
+b2: 0.999
+norm_clip: 1.0
+train_outer_samples: 1024
+train_inner_samples: 1024
+train_outer_batch_size: 256
+eval_inner_samples: 5e5
+eval_outer_samples: 2048
+eval_outer_batch_size: 64
+grad_est_type: spce
+checkpoint_freq: 100
+
+optim_log_freq: 500
+eig_bounds:
+  freq: 500
+  eval_at: null

@@ -1,0 +1,12 @@
+# Stochastic policy network (GRU-based)
+_target_: policy_learning.policies.IqbalGRUNet
+encoder_shapes: [256, 256]
+encoding_dim: 64
+rnn_hidden_dim: 64
+rnn_layers: 2
+enc_act: relu
+emit_act: relu
+emitter_shapes: [256, 256]
+concat: true
+min_std: 1.0e-4
+deterministic: false

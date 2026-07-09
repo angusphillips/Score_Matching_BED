@@ -1,0 +1,25 @@
+# @package _global_
+# Variational posterior (var_post) training
+
+experiment_name: var_post_cart_pole
+
+defaults:
+  - /hydra: default
+  - /bed_model: cart_pole
+  - /policy_network: iqbal_lstm
+  - /var_post: default
+  - /wandb: default
+  - _self_
+
+# Global settings
+seed: 0
+
+# Override wandb settings
+wandb:
+  tags: ["results_24_05", "var_post"]
+
+var_post:
+  posterior_positional: true
+  posterior_canonicalize_sources: false
+  posterior_num_components: 3
+  mc_posterior_mala_step_size: 0.01

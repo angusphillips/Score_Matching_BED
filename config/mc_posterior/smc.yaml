@@ -1,0 +1,11 @@
+# Tempered Sequential Monte Carlo posterior sampler.
+# Shared by the train and eval MC oracles; n_post_samples is set per use case via
+# train_n_post_samples / eval_n_post_samples in the experiment.
+posterior_sampler: smc
+batch_size: 16
+mala_steps: 5
+mala_step_size: 0.1   # initial; SMC adapts it toward ~0.574 acceptance
+sampler_kwargs:
+  n_temperatures: 64
+  temp_power: 2.0
+  final_mala_steps: 25

@@ -1,0 +1,5 @@
+# Base config - compose experiment and allow overrides
+# Usage: python run_scripts/run_random_restarts.py experiment=location_finding
+
+defaults:
+  - experiment: location_finding

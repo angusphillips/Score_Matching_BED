@@ -1,0 +1,21 @@
+# Full score-training preset (the file name refers to the LR schedule).
+num_iters: 100000
+lr_schedule:
+  _target_: optax.warmup_cosine_decay_schedule
+  init_value: 0.0
+  peak_value: 2e-4
+  warmup_steps: ${eval:'max(1, int(${..num_iters} * 0.001))'}
+  decay_steps: ${eval:'max(2, int(${..num_iters}))'}
+  end_value: 1e-5
+log_freq: 200
+checkpoint_freq: null
+eval_batch_size: 1024
+batch_size: 1024
+
+# Per-coordinate weight on the y-score loss component (the x-score component is
+# unit-weighted). Task-dependent so the y- and x-loss magnitudes are comparable.
+y_score_loss_weight: 1.0
+
+clip_grad_norm: 1.0
+design_sampler_type: null
+design_sampler_kwargs: null

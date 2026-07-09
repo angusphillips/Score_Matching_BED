@@ -1,0 +1,13 @@
+_target_: policy_learning.score_nets.TransformerModelMLPEmbed
+num_layers: 2
+model_dim: 64
+num_heads: 2
+embed_mlp_dim: 64
+embed_dim: 48
+positional: false
+head_mode: base
+noise_condition_mode: y_and_xi_mean
+xi_output_mode: none
+y_output_mode: none
+y_residual_mode: default
+rff_sigma: 10.0

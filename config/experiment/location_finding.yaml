@@ -1,0 +1,63 @@
+# @package _global_
+# Location finding with policy network
+
+experiment_name: location_finding
+
+defaults:
+  - /hydra: default
+  - /bed_model: location_finding
+  - /policy_network: dad
+  - /policy: dad
+  - /score: warmup_cosine_decay
+  - /score_network: conservative_transformer
+  - /mc_posterior: smc
+  - /wandb: default
+  - _self_
+
+# Global settings
+seed: 0
+score_reload_path: null
+score_reload_step: null 
+
+# Override wandb settings for this experiment
+wandb:
+    tags: ["testing"]
+
+n_restarts: 5
+
+# MC posterior oracle: shared sampler config (config/mc_posterior) + per-use-case
+# sample counts (train = cheap per-step backend; eval = accurate one-off ground truth).
+train_n_post_samples: 1024
+eval_n_post_samples: 5000
+
+policy:
+  grad_est_type: score
+  num_iters: 20000
+  checkpoint_freq: 20000
+  optim_log_freq: 200
+  eig_bounds:
+    freq: 1000
+    eval_at: null
+
+score:
+  num_iters: 50000
+  checkpoint_freq: null
+  eval_iters: [10000, 20000, 50000, 100000] #[10000, 20000, 50000, 100000, 200000]
+  y_score_loss_weight: 30
+  clip_grad_norm: 600
+  design_sampler_type: random_sampler
+  # Per-type mixture weights for random_sampler (overrides the hardcoded
+  # SAMPLER_WEIGHTS in bed_models/location_finding.py). Weights are normalised
+  # over candidate_samplers; a weight of 0 disables that type.
+  design_sampler_kwargs:
+    sampler_weights_by_type:
+      isotropic_unit_gaussian: 0.0
+      time_corr_unit_gaussian: 0.0
+      isotropic_random_scale_gaussian: 0.0
+      time_corr_random_scale_gaussian: 1.0
+      random_projection: 1.0
+    # Optional: restrict which types participate (defaults to all canonical types)
+    # candidate_samplers: [time_corr_random_scale_gaussian, random_projection]
+    # Optional: per-type sampler kwargs (defaults to DEFAULT_SAMPLER_KWARGS)
+    # sampler_kwargs_by_type:
+    #   isotropic_unit_gaussian: {scale: 1.0, time_corr_rho: 0.0}

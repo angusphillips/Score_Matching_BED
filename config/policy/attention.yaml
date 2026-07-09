@@ -1,0 +1,23 @@
+# Default policy training settings
+lr_schedule:
+  _target_: optax.schedules.exponential_decay
+  init_value: 5e-5
+  transition_steps: 1000
+  decay_rate: 0.98
+  staircase: true
+num_iters: 20000
+b1: 0.8
+b2: 0.998
+norm_clip: 1.0
+train_outer_samples: 1024
+train_inner_samples: 1024
+train_outer_batch_size: 1024
+eval_inner_samples: 5e5
+eval_outer_samples: 2048
+eval_outer_batch_size: 256
+grad_est_type: spce
+
+optim_log_freq: 2000
+eig_bounds:
+  freq: 2000
+  eval_at: null

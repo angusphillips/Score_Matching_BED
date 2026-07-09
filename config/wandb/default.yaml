@@ -1,0 +1,3 @@
+# Default wandb settings
+project: policy-learning
+tags: []

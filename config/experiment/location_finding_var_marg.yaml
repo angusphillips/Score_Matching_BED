@@ -1,0 +1,26 @@
+# @package _global_
+# Variational marginal with static design
+
+experiment_name: variational_lf
+
+defaults:
+  - /hydra: default
+  - /bed_model: location_finding
+  - /policy_network: dad
+  - /policy: dad
+  - /variational: maf
+  - /wandb: default
+  - _self_
+
+# Global settings
+seed: 0
+
+var_reload_path: null
+
+policy:
+  grad_est_type: variational_marg
+
+# Override wandb settings
+wandb:
+  tags: ["results_sweep_test_run", "var_marg"]
+

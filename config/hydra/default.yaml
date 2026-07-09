@@ -1,0 +1,10 @@
+# Default hydra output configuration
+# Saves outputs to results/YYYY-MM-DD_HH-MM-SS with config backups in .hydra/
+
+job:
+  chdir: false
+
+run:
+  dir: results/${experiment_name}/${now:%Y-%m-%d_%H-%M-%S}
+
+output_subdir: .hydra

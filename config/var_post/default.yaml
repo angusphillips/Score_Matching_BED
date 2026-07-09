@@ -1,0 +1,70 @@
+# Variational posterior (var_post) training configuration
+
+# Posterior architecture
+posterior_embedding_dim: 128
+posterior_embed_mlp_dim: 256
+posterior_model_dim: 256
+posterior_num_layers: 3
+posterior_num_heads: 4
+posterior_num_components: 10
+posterior_rff_sigma: 10.0
+posterior_positional: false
+posterior_canonicalize_sources: false
+
+# Objective selection
+objective: ba_bound
+
+# Diagnostic mode: train only posterior with random Gaussian designs
+posterior_only_random_policy: false
+posterior_only_random_policy_std: 1.0
+
+# Training hyperparameters
+num_iters: 200000
+batch_size: 1024
+posterior_samples: 1  # Number of posterior samples per batch for likelihood estimation
+
+# Diagnostic / evaluation logging
+eval_freq: 1000
+eval_outer_samples: 2048
+eval_outer_batch_size: 256
+eval_inner_samples: 500000
+reuse_inner_samples: false
+posterior_plot_samples: 256
+mc_posterior_plot_samples: 256
+mc_posterior_mala_steps: 5
+mc_posterior_mala_step_size: 0.1
+# Number of policy rollout figures to log per eval (via get_rollout_plot_fn).
+n_plot_rollouts: 3
+
+# Policy optimization
+policy_lr_schedule:
+  # _target_: optax.schedules.exponential_decay
+  # init_value: 5e-5
+  # transition_steps: 5000
+  # decay_rate: 0.98
+  # staircase: true
+  _target_: optax.cosine_decay_schedule
+  init_value: 1e-5
+  decay_steps: ${eval:'int(${..num_iters})'}
+  alpha: 5e-6
+policy_grad_clip: 1.0
+policy_b1: 0.9
+policy_b2: 0.999
+
+# Posterior optimization
+posterior_lr_schedule:
+  _target_: optax.warmup_cosine_decay_schedule
+  init_value: 0.0
+  peak_value: 1e-3
+  warmup_steps: ${eval:'int(${..num_iters} * 0.001)'}
+  decay_steps: ${eval:'int(${..num_iters})'}
+  end_value: 1e-6
+  # _target_: optax.constant_schedule
+  # value: 1.0e-3
+posterior_grad_clip: 1.0
+posterior_b1: 0.9
+posterior_b2: 0.999
+
+# Logging and checkpointing
+log_freq: 100
+checkpoint_freq: 1000

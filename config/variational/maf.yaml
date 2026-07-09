@@ -1,0 +1,25 @@
+# MAF configuration (~1M parameters)
+dist:
+  model_type: maf
+  flow_layers: 5
+  nn_width: 80
+  nn_depth: 2
+  num_bins: 8
+
+# Learning rate schedule with warmup
+num_iters: 1e5
+lr_schedule:
+  _target_: optax.warmup_cosine_decay_schedule
+  init_value: 0.0
+  peak_value: 1e-3
+  warmup_steps: ${eval:'int(${..num_iters} * 0.001)'}
+  decay_steps: ${eval:'int(${..num_iters})'}
+  end_value: 1e-6
+
+# Training config
+checkpoint_freq: 100000
+batch_size: 1024
+grad_clip_norm: 10.0
+log_freq: 100
+plot_freq: 2e5
+loss: var_marg

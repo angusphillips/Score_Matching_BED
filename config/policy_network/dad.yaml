@@ -1,0 +1,8 @@
+# Deterministic policy network (MLP-based)
+_target_: policy_learning.policies.DADNet
+encoder_shapes: [256]
+encoding_dim: 16
+enc_act: relu
+emit_act: relu
+emitter_shapes: []
+zero_init_final_layer: true

@@ -1,0 +1,23 @@
+# @package _global_
+# Variational posterior (var_post) training on location finding task
+
+experiment_name: var_post_lf
+
+defaults:
+  - /hydra: default
+  - /bed_model: location_finding
+  - /policy_network: dad
+  - /var_post: default
+  - /wandb: default
+  - _self_
+
+# Global settings
+seed: 0
+
+# Override wandb settings
+wandb:
+  tags: ["results_24_05", "var_post"]
+
+var_post:
+  posterior_canonicalize_sources: true
+  posterior_positional: false

@@ -1,0 +1,9 @@
+# Single Laplace-approximation IS proposal + MALA.
+# Shared by the train and eval MC oracles; n_post_samples is set per use case via
+# train_n_post_samples / eval_n_post_samples in the experiment.
+posterior_sampler: laplace
+batch_size: 16
+mala_steps: 5
+mala_step_size: 0.1
+laplace_reg: 1.0e-4   # diagonal regulariser on the Laplace Hessian
+n_map_steps: 500      # optimiser steps to find the MAP / Laplace centre

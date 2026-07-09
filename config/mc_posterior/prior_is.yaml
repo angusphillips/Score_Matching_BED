@@ -1,0 +1,7 @@
+# Prior importance sampling + MALA refinement.
+# Shared by the train and eval MC oracles; n_post_samples is set per use case via
+# train_n_post_samples / eval_n_post_samples in the experiment.
+posterior_sampler: prior_is
+batch_size: 16
+mala_steps: 5
+mala_step_size: 0.1
